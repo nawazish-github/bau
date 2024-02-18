@@ -37,6 +37,16 @@ function LoginPage() {
     }
   };
 
+  const isDisabled = () => {
+    if (username === "" || password === "") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handle = () => console.log("clicked");
+
   return (
     <>
       <div className="flex justify-center items-center bg-sky-100 h-screen w-full">
@@ -81,7 +91,12 @@ function LoginPage() {
               >
                 Forgot password?
               </Link>
-              <Button btnname="Login" />
+              <Button
+                onClick={handle}
+                isDisabled={isDisabled}
+                type="submit"
+                btnname="Login"
+              />
             </div>
           </form>
         </div>
