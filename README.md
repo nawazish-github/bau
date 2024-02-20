@@ -18,4 +18,4 @@
 - Clone the repository to desired path directory.
 - Open command prompt, go to the clone repository path directory(eg: ./cd ..pathdirectory).
 - To run directory use command line, >nmp run dev.
-- Copy Local: http://<hostname>:<port_number>/ , and open in browser.
+- Copy Local: http://localhost:####/ , and open in browser.
