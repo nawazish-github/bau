@@ -1,9 +1,13 @@
 import React from "react";
 
-function Button({ type, btnname, className, isDisabled, onClick }) {
+function Button({ type, btnname, isDisabled, onClick }) {
   return (
     <button
-      className={` bg-sky-600 text-white rounded-lg p-2 font-bold mt-6 ${className}`}
+      className={`border border-gray-300 rounded-lg p-2 font-bold mt-6 ${
+        isDisabled()
+          ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+          : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
+      } `}
       type={type}
       disabled={isDisabled()}
       onClick={onClick}
