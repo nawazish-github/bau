@@ -8,6 +8,7 @@ function InputField({ type, placeholder, value, onChange }) {
         type={type}
         placeholder={placeholder}
         onChange={onChange}
+        value={value}
       />
     </div>
   );
