@@ -6,13 +6,13 @@
 
 >[macOS](https://support.apple.com/downloads/macos)(10.13 and above)
 
->[Linux]()(major distributions like Ubuntu, Debian, CentOS, Fedora, etc)
+>[Linux](https://learn.microsoft.com/en-us/linux/install)(major distributions like Ubuntu, Debian, CentOS, Fedora, etc)
 
->[SmartOS]()
+>[SmartOS](https://docs.smartos.org/download-smartos/)
 
->[AIX]()
+>[AIX](https://www.ibm.com/support/pages/downloading-aix-iso-specific-oslevel)
 
->[IBMi]()
+>[IBMi](https://www.ibm.com/support/pages/ibm-i-access-client-solutions)
 
 # Run Environment :
 - Clone the repository to desired path directory.
