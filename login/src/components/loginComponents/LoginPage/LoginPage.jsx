@@ -6,46 +6,54 @@ import { Link } from "react-router-dom";
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [userField, setuserField] = useState("");
-  const [passwordField, setpasswordField] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [failureMessage, setFailureMessage] = useState("");
+  const [successStatus, setSuccessStatus] = useState("");
+  const [unsuccessStatus, setUnsuccessStatus] = useState("");
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
-    setuserField("");
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    setpasswordField("");
-    setErrorMessage("");
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    if (username === "") {
-      setuserField(`Please enter username`);
-    } else if (password === "") {
-      setpasswordField(`Please enter password`);
-      setErrorMessage("");
-    } else if (password === "password") {
-      console.log(`user loged in : `, password);
-      setErrorMessage("");
-    } else {
-      setErrorMessage(`Please insert correct password`);
-    }
+    fetch("http://localhost:3333/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((response) => {
+        console.log("the response is: ", response);
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("login failed");
+        }
+      })
+      .then((data) => {
+        console.log("the data is: ", data);
+        setSuccessStatus(data.status);
+        setSuccessMessage(data.message);
+        setFailureMessage("");
+        setUnsuccessStatus("");
+      })
+      .catch((error) => {
+        console.log("the error is: ", error);
+        setUnsuccessStatus(error.status);
+        setFailureMessage(error.message);
+        setSuccessMessage("");
+        setUnsuccessStatus("");
+      });
   };
 
-  const isDisabled = () => {
-    if (username === "" || password === "") {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const handle = () => console.log("clicked");
+  const isDisabled = !username || !password;
 
   return (
     <>
@@ -67,7 +75,6 @@ function LoginPage() {
                 onChange={handleUsernameChange}
               />
             </div>
-            <span className="text-red-700 text-sm">{userField}</span>
             <div>
               <div className="flex justify-between">
                 <label htmlFor="password">Password</label>
@@ -80,10 +87,6 @@ function LoginPage() {
                 onChange={handlePasswordChange}
               />
             </div>
-            <span className="text-red-700 text-sm">{passwordField}</span>
-            <span className="text-red-600 underline text-sm">
-              {errorMessage}
-            </span>
             <div className="flex justify-between">
               <Link
                 to="/"
@@ -91,14 +94,11 @@ function LoginPage() {
               >
                 Forgot password?
               </Link>
-              <Button
-                onClick={handle}
-                isDisabled={isDisabled}
-                type="submit"
-                btnname="Login"
-              />
+              <Button isDisabled={isDisabled} type="submit" btnname="Login" />
             </div>
           </form>
+          <p>{successStatus || unsuccessStatus}</p>
+          <p className="text-red-500">{successMessage || failureMessage}</p>
         </div>
       </div>
     </>
