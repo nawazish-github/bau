@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [failureMessage, setFailureMessage] = useState("");
-  const [successStatus, setSuccessStatus] = useState("");
-  const [unsuccessStatus, setUnsuccessStatus] = useState("");
-
+  const navigate = useNavigate();
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
@@ -34,22 +31,20 @@ function LoginPage() {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error("login failed");
+          throw new Error("Network response was not ok");
         }
       })
       .then((data) => {
         console.log("the data is: ", data);
-        setSuccessStatus(data.status);
-        setSuccessMessage(data.message);
-        setFailureMessage("");
-        setUnsuccessStatus("");
+        if (data.status === "successful") {
+          navigate("/layout");
+        } else {
+          setFailureMessage(data.message);
+        }
       })
       .catch((error) => {
-        console.log("the error is: ", error);
-        setUnsuccessStatus(error.status);
+        console.error("Fetch error:", error);
         setFailureMessage(error.message);
-        setSuccessMessage("");
-        setUnsuccessStatus("");
       });
   };
 
@@ -97,8 +92,7 @@ function LoginPage() {
               <Button isDisabled={isDisabled} type="submit" btnname="Login" />
             </div>
           </form>
-          <p>{successStatus || unsuccessStatus}</p>
-          <p className="text-red-500">{successMessage || failureMessage}</p>
+          <p className="text-red-500">{failureMessage}</p>
         </div>
       </div>
     </>
