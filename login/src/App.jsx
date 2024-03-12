@@ -11,7 +11,7 @@ function App() {
       element: <LoginPage />,
     },
     {
-      path: "/layout",
+      path: "/bau/dashboard",
       element: <Layout />,
       children: [
         {
