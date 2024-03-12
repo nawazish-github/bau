@@ -7,7 +7,9 @@ function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [failureMessage, setFailureMessage] = useState("");
+
   const navigate = useNavigate();
+
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
@@ -27,7 +29,7 @@ function LoginPage() {
       body: JSON.stringify({ username, password }),
     })
       .then((response) => {
-        console.log("the response is: ", response);
+        // console.log("the response is: ", response);
         if (response.ok) {
           return response.json();
         } else {
@@ -35,15 +37,16 @@ function LoginPage() {
         }
       })
       .then((data) => {
-        console.log("the data is: ", data);
+        // console.log("the data is: ", data);
         if (data.status === "successful") {
-          navigate("/layout");
+          navigate("/bau/dashboard");
+          setFailureMessage("");
         } else {
           setFailureMessage(data.message);
         }
       })
       .catch((error) => {
-        console.error("Fetch error:", error);
+        console.error(error);
         setFailureMessage(error.message);
       });
   };
