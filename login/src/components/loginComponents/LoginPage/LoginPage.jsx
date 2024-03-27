@@ -92,7 +92,16 @@ function LoginPage() {
               >
                 Forgot password?
               </Link>
-              <Button isDisabled={isDisabled} type="submit" btnname="Login" />
+              <Button
+                isDisabled={isDisabled}
+                type="submit"
+                btnname="Login"
+                className={`border border-gray-300 rounded-lg p-2 font-bold mt-6 ${
+                  isDisabled
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
+                } `}
+              />
             </div>
           </form>
           <p className="text-red-500">{failureMessage}</p>
