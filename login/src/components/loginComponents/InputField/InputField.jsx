@@ -1,10 +1,10 @@
 import React from "react";
 
-function InputField({ type, placeholder, value, onChange }) {
+function InputField({ type, placeholder, value, onChange, className }) {
   return (
     <div className="rounded-lg">
       <input
-        className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-indigo-500"
+        className={className}
         type={type}
         placeholder={placeholder}
         onChange={onChange}
