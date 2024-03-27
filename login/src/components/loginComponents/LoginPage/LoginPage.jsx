@@ -69,6 +69,7 @@ function LoginPage() {
               <InputField
                 type="text"
                 placeholder="username"
+                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-indigo-500"
                 value={username}
                 onChange={handleUsernameChange}
               />
@@ -81,6 +82,7 @@ function LoginPage() {
               <InputField
                 type="password"
                 placeholder="password"
+                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:border-indigo-500"
                 value={password}
                 onChange={handlePasswordChange}
               />
@@ -95,7 +97,7 @@ function LoginPage() {
               <Button
                 isDisabled={isDisabled}
                 type="submit"
-                btnname="Login"
+                label="Login"
                 className={`border border-gray-300 rounded-lg p-2 font-bold mt-6 ${
                   isDisabled
                     ? "bg-gray-200 text-gray-500 cursor-not-allowed"
