@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import Button from "../loginComponents/Button/Button";
+import OutletTitle from "../OutletTitle";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const [services, setServices] = useState("");
+  const [services, setServices] = useState([]);
+  const Navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3333/bau/services")
@@ -24,23 +28,42 @@ function Dashboard() {
       });
   }, []);
 
+  const handleButtonClick = (service) => {
+    // console.log(service);
+    service === "purchases" ? Navigate(service) : "";
+  };
+
   return (
     <>
-      <div className="flex justify-center items-center h-24 bg-yellow-200">
-        <div className="font-bold text-xl">Dashboard</div>
-      </div>
-      <div className="w-full flex justify-evenly items-center mt-16">
-        {services &&
-          services.map((services, index) => (
-            <div key={index}>
-              <button
-                type="button"
-                className="bg-green-300 rounded-xl p-8 pl-12 pr-12 shadow-lg shadow-green-500 font-bold"
-              >
-                {services[0].toUpperCase() + services.slice(1)}
-              </button>
-            </div>
-          ))}
+      <div className="bg-green-300 w-full h-screen">
+        <div>
+          <OutletTitle
+            title="Dashboard"
+            className=" bg-amber-500 w-full font-semibold text-xl h-10 flex justify-center items-center"
+          />
+        </div>
+        <div className="flex justify-center mt-32">
+          <div className="grid grid-cols-3 gap-x-48 gap-y-16">
+            {services &&
+              services.map((service, index) => (
+                <Button
+                  key={index}
+                  type="button"
+                  label={service[0].toUpperCase() + service.slice(1)}
+                  onClick={() => handleButtonClick(service)}
+                  className={`bg-gray-300 shadow-gray-500 shadow-lg w-40 h-28 flex justify-center items-center rounded-xl font-bold ${
+                    service === "sales"
+                      ? "bg-lime-300 shadow-lime-500"
+                      : service === "purchases"
+                      ? "bg-teal-300 shadow-teal-500"
+                      : service === "inventory"
+                      ? "bg-rose-300 shadow-rose-500"
+                      : ""
+                  }`}
+                />
+              ))}
+          </div>
+        </div>
       </div>
     </>
   );
