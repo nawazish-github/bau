@@ -1,0 +1,201 @@
+import React, { useState } from "react";
+import OutletTitle from "../OutletTitle";
+import Button from "../loginComponents/Button/Button";
+import InputField from "../loginComponents/InputField/InputField";
+import PurchaseForm from "./PurchaseForm";
+
+function Purchases() {
+  const [searchClicked, setSearchClicked] = useState(false);
+  const [invoiceNum, setInvoiceNum] = useState("");
+  const [invoiceDetails, setInvoiceDetails] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  // Handle search click
+  const handleSearchClick = () => {
+    setSearchClicked(true);
+  };
+
+  // Handle input change
+  const handleInputChange = (e) => {
+    setInvoiceNum(e.target.value);
+  };
+
+  // Handle Go
+  const handleGo = (e) => {
+    e.preventDefault();
+    if (!invoiceNum) return;
+    const url = `http://localhost:3333/bau/services/purchase/search?invoiceNumber=${invoiceNum}`;
+    fetch(url)
+      .then((response) => {
+        console.log("The response is:", response);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log("The data is:", data);
+        setInvoiceDetails(data);
+        setErrorMessage(null);
+      })
+      .catch((error) => {
+        console.error("The error is:", error);
+        setErrorMessage(error.message);
+        setInvoiceDetails(null);
+      });
+  };
+
+  // const renderLineItemsTable = (invoiceDetails) => {
+  //   return (
+      
+  //   );
+  // };
+
+  return (
+    <>
+      <div className="w-full h-screen">
+        <div className="w-full flex">
+          {/* Side Panel Div */}
+          <div className="bg-green-400 w-1/5 h-screen">
+            <OutletTitle
+              title="Dashboard"
+              className="bg-amber-200 font-semibold text-lg flex justify-center p-4"
+            />
+            <div className="grid justify-center gap-y-8 mt-8">
+              <Button
+                label="Sales"
+                className="bg-zinc-700 text-white w-24 h-12 rounded-3xl"
+              />
+              <Button
+                label="Inventory"
+                className="bg-zinc-700 text-white w-24 h-12 rounded-3xl"
+              />
+            </div>
+          </div>
+          {/* Purchase Div */}
+          <div className="w-full h-screen">
+            <div>
+              <OutletTitle
+                title="Purchases"
+                className="bg-teal-300 w-full font-semibold text-xl h-10 flex justify-center items-center"
+              />
+            </div>
+            <div className="w-full h-screen">
+              {!searchClicked ? (
+                <>
+                  <div className="flex justify-center gap-x-32 p-4">
+                    <Button
+                      label="New Purchase"
+                      className="bg-blue-400 w-24 h-16 rounded-xl"
+                    />
+                    <Button
+                      label="Update Purchase"
+                      className="bg-yellow-400 w-24 h-16 rounded-xl"
+                    />
+                    <Button
+                      label="Search Purchase"
+                      className="bg-green-400 w-24 h-16 rounded-xl"
+                      onClick={handleSearchClick}
+                    />
+                  </div>
+                  <div>
+                    <PurchaseForm />
+                  </div>
+                </>
+              ) : (
+                <div className="h-[35.45rem] bg-slate-400">
+                  <div className="flex items-center justify-center p-16 gap-x-2">
+                    <label
+                      htmlFor="invoiceNumber"
+                      className="text-lg font-medium"
+                    >
+                      Invoice Number :
+                    </label>
+                    <InputField
+                      type="text"
+                      id="invoiceNumber"
+                      name="invoiceNumber"
+                      placeholder="Enter Invoice Number"
+                      value={invoiceNum}
+                      onChange={handleInputChange}
+                      className="border border-gray-300 rounded-lg p-2"
+                    />
+                    <Button
+                      type="button"
+                      label="Go"
+                      onClick={handleGo}
+                      className="bg-green-400 w-16 h-10 rounded-lg"
+                    />
+                  </div>
+                  {errorMessage && (
+                    <div className="text-red-500 text-center">
+                      {errorMessage}
+                    </div>
+                  )}
+                  {invoiceDetails && (
+                    <div className="p-4">
+                      <table className="w-full border-collapse border border-gray-400 my-4">
+                        <thead>
+                          <tr>
+                            <th className="border border-gray-300 p-2" colSpan="2">Invoice Details</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td className="bg-gray-200 font-bold p-2">Date</td>
+                            <td className="border border-gray-300 p-2">{invoiceDetails.date}</td>
+                          </tr>
+                          <tr>
+                            <td className="bg-gray-200 font-bold p-2">Vendor Name</td>
+                            <td className="border border-gray-300 p-2">{invoiceDetails.vendorDetails.name}</td>
+                          </tr>
+                          <tr>
+                            <td className="bg-gray-200 font-bold p-2">Vendor Address</td>
+                            <td className="border border-gray-300 p-2">{invoiceDetails.vendorDetails.address}</td>
+                          </tr>
+                          <tr>
+                            <td className="bg-gray-200 font-bold p-2">Vendor Contact</td>
+                            <td className="border border-gray-300 p-2">{invoiceDetails.vendorDetails.contact}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table className="w-full border-collapse border border-gray-400 my-4">
+        <thead>
+          <tr>
+            <th className="border border-gray-300 p-2">SL No</th>
+            <th className="border border-gray-300 p-2">Item Name</th>
+            <th className="border border-gray-300 p-2">Quantity</th>
+            <th className="border border-gray-300 p-2">Unit</th>
+            <th className="border border-gray-300 p-2">Discount</th>
+            <th className="border border-gray-300 p-2">Rate Per Unit</th>
+            <th className="border border-gray-300 p-2">Net</th>
+          </tr>
+        </thead>
+        <tbody>
+          {invoiceDetails.lineItems.map((item, index) => (
+            <tr key={index}>
+              <td className="border border-gray-300 p-2">{item.slNo}</td>
+              <td className="border border-gray-300 p-2">{item.name}</td>
+              <td className="border border-gray-300 p-2">{item.quantity}</td>
+              <td className="border border-gray-300 p-2">{item.unit}</td>
+              <td className="border border-gray-300 p-2">{item.discount}</td>
+              <td className="border border-gray-300 p-2">{item.rpu}</td>
+              <td className="border border-gray-300 p-2">{item.net}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Purchases;

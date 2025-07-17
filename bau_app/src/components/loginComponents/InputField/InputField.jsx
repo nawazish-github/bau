@@ -1,6 +1,6 @@
 import React from "react";
 
-function InputField({ type, placeholder, value, onChange, className, id, name, required }) {
+function InputField({ type, placeholder, value, onChange, className, id, name, required, autoComplete }) {
   return (
     <div className="rounded-lg">
       <input
@@ -12,6 +12,7 @@ function InputField({ type, placeholder, value, onChange, className, id, name, r
         id={id}
         name={name}
         required={required}
+        autoComplete={autoComplete}
       />
     </div>
   );

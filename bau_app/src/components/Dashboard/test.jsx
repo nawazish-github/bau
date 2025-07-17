@@ -1,3 +1,5 @@
+// DASHBOARD ORIGENAL CODE
+
 import React, { useEffect, useState } from "react";
 import Button from "../loginComponents/Button/Button";
 import OutletTitle from "../OutletTitle";
@@ -10,7 +12,7 @@ function Dashboard() {
   useEffect(() => {
     fetch("http://localhost:3333/bau/services")
       .then((response) => {
-        // console.log("the respose is:", response);
+        console.log("the respose is:", response);
         if (response.ok) {
           return response.json();
         } else {
@@ -18,13 +20,13 @@ function Dashboard() {
         }
       })
       .then((data) => {
-        // console.log("the data is:", data);
+        console.log("the data is:", data);
         if (data.status === "success") {
           setServices(data.services);
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("the erroe is: ", error);
       });
   }, []);
 
@@ -35,11 +37,12 @@ function Dashboard() {
 
   return (
     <>
-      <div className="bg-green-300 w-full h-screen">
+      <div className="w-full h-screen">
+        <img src="../src/assets/dashboard_img.jpg" alt="" />
         <div>
           <OutletTitle
             title="Dashboard"
-            className=" bg-amber-500 w-full font-semibold text-xl h-10 flex justify-center items-center"
+            className=" bg- w-full font-semibold text-xl h-10 flex justify-center items-center"
           />
         </div>
         <div className="flex justify-center mt-32">
